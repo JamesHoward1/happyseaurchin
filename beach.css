@@ -1,0 +1,56 @@
+/* Silo Buster pages. Styled after happyseaurchin.com: warm paper, deep teal, geometric headings, serif reading text, mono labels. */
+:root{
+  --paper:#f8f5ee; --paper-2:#f1ece1; --ink:#1f2b2a; --teal:#1f5c5a; --teal-2:#2e7471;
+  --rule:#d9d2c3; --muted:#6b706c; --amber:#c27a36; --card:#fffdf8;
+}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.62 "Source Serif 4",Georgia,serif;-webkit-font-smoothing:antialiased}
+a{color:var(--teal);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--amber)}
+.mono,code{font-family:"Space Mono",ui-monospace,Menlo,monospace}
+header.bar{position:sticky;top:0;z-index:5;background:rgba(248,245,238,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:880px;margin:0 auto;padding:12px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.crumb{font:13px/1.3 "Space Mono",monospace;color:var(--ink)}
+.crumb b{font-weight:700}
+.crumb .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--teal);margin-right:8px;vertical-align:1px}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{font:12px/1 "Space Mono",monospace;padding:7px 10px;border:1px solid var(--rule);border-radius:7px;background:var(--card);color:var(--ink);text-decoration:none}
+.pill.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.pill.amber{border-color:var(--amber);color:var(--amber)}
+main{max-width:880px;margin:0 auto;padding:40px 20px 80px}
+.kicker{font:12px/1.4 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+h1{font:800 clamp(30px,5vw,46px)/1.08 "Syne",system-ui,sans-serif;color:var(--teal);margin:.25em 0 .35em;letter-spacing:-.01em}
+.lede{font-size:21px;line-height:1.5;color:var(--ink);max-width:40em;margin:0 0 18px}
+.byline{font:13px/1.5 "Space Mono",monospace;color:var(--muted);margin-bottom:28px}
+.live{display:inline-flex;align-items:center;gap:8px;font:12px/1 "Space Mono",monospace;color:var(--teal);background:var(--card);border:1px solid var(--rule);border-radius:7px;padding:8px 10px}
+.live i{width:7px;height:7px;border-radius:50%;background:#3aa37a;box-shadow:0 0 0 3px rgba(58,163,122,.18)}
+section.part{display:grid;grid-template-columns:44px 1fr;gap:0 18px;padding:30px 0;border-top:1px solid var(--rule)}
+.num{width:36px;height:36px;border:2px solid var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 15px/1 "Space Mono",monospace;color:var(--teal);margin-top:4px}
+h2{font:700 clamp(21px,3vw,27px)/1.2 "Syne",system-ui,sans-serif;color:var(--teal);margin:6px 0 12px}
+h3{font:700 18px/1.3 "Syne",system-ui,sans-serif;color:var(--ink);margin:22px 0 8px}
+.para{position:relative;margin:0 0 14px}
+.para .addr{position:absolute;left:-62px;top:5px;width:44px;text-align:right;font:11px/1 "Space Mono",monospace;color:var(--rule)}
+.para:hover .addr{color:var(--muted)}
+.sub{border-left:3px solid var(--paper-2);padding-left:16px;margin:8px 0 16px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:18px 20px;margin:12px 0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin:22px 0}
+.cards a.card{display:block;text-decoration:none;color:var(--ink);transition:transform .12s,border-color .12s}
+.cards a.card:hover{transform:translateY(-2px);border-color:var(--teal)}
+.cards .t{font:700 19px/1.25 "Syne",sans-serif;color:var(--teal);margin:6px 0 6px}
+.cards .d{font-size:16px;line-height:1.5;color:var(--ink)}
+.room{margin-top:40px;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:20px 22px}
+.room h2{margin-top:0}
+.prompt{font:13px/1.55 "Space Mono",monospace;background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:12px 14px;white-space:pre-wrap;margin:10px 0}
+.btn{display:inline-block;font:700 13px/1 "Space Mono",monospace;background:var(--teal);color:#fff;border:0;border-radius:7px;padding:10px 13px;cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--teal-2);color:#fff}
+.state{font:14px/1.5 "Space Mono",monospace;color:var(--muted);padding:30px 0}
+footer{max-width:880px;margin:0 auto;padding:24px 20px 50px;border-top:1px solid var(--rule);font:12px/1.6 "Space Mono",monospace;color:var(--muted)}
+@media (max-width:640px){
+  body{font-size:17px}
+  section.part{grid-template-columns:1fr}
+  .num{margin-bottom:6px}
+  .para .addr{display:none}
+  .bar-in{flex-direction:column;align-items:flex-start}
+}
+@media print{header.bar,.room,.live{display:none}body{background:#fff}section.part{break-inside:avoid-page}}
