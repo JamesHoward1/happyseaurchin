@@ -1,0 +1,35 @@
+# Keeps a static snapshot of each paper in its page, so link previews, search engines and
+# other people's assistants can read the site. Browsers still read the beach live.
+name: Snapshot the papers
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"   # every six hours
+  workflow_dispatch:          # the "Run workflow" button
+  push:
+    branches: [main]
+    paths: ["beach.js", "*.html", "build/**"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node build/snapshot.js
+      - name: Commit if anything changed
+        run: |
+          if git diff --quiet; then echo "No change."; exit 0; fi
+          git config user.name "silo-buster-snapshot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Snapshot the papers from the beach"
+          git push

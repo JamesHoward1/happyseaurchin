@@ -92,15 +92,21 @@ function foot(name) {
 }
 
 /* ---------- a paper ---------- */
-function renderPaper(name, block) {
+// The root line "TITLE — kicker. James Howard (...). Lede…" split into its parts.
+function paperParts(name, block) {
   const page = PAGES[name] || { title: name, short: name };
   const root = typeof block._ === "string" ? block._ : "";
   const { line } = splitHead(root);
   const sentences = line.split(/(?<=\.)\s+/);
-  let bi = sentences.findIndex(s => /James Howard/.test(s));
+  const bi = sentences.findIndex(s => /James Howard/.test(s));
   const pre = bi > 0 ? sentences.slice(0, bi).join(" ").replace(/\.$/, "") : "";
   const byline = bi >= 0 ? sentences[bi].replace(/\s*\(emojisword\)/, "") : "";
   const lede = bi >= 0 ? sentences.slice(bi + 1).join(" ") : line;
+  return { page, pre, byline, lede };
+}
+
+function renderPaper(name, block) {
+  const { page, pre, byline, lede } = paperParts(name, block);
 
   let html = `<div class="kicker">${esc(pre || "silo buster")}</div>
     <h1>${esc(page.title)}</h1>
@@ -170,14 +176,23 @@ async function boot() {
   document.body.insertAdjacentHTML("beforeend", foot(name || "proposal:silo-buster and its siblings"));
   if (!name) { main.innerHTML = renderIndex(); return; }
   if (PAGES[name]) document.title = PAGES[name].title;
-  main.innerHTML = `<div class="state">Reading the latest version from the beach…</div>`;
+  // A snapshot written by build/snapshot.js stays on screen until the live read lands,
+  // and stays put if the beach can't be reached.
+  const snapshot = main.hasAttribute("data-snapshot");
+  if (!snapshot) main.innerHTML = `<div class="state">Reading the latest version from the beach…</div>`;
   try {
     const block = (window.FIXTURE && window.FIXTURE[name]) || await readBlock(name);
     main.innerHTML = renderPaper(name, block);
+    main.removeAttribute("data-snapshot");
   } catch (e) {
+    if (snapshot) return;
     main.innerHTML = `<div class="state">The beach could not be reached just now (${esc(e.message)}).
       You can read this paper on David's renderer instead:<br><br>
       <a class="btn" href="${RENDER + encodeURIComponent(name)}">Open ${esc(name)}</a></div>`;
   }
 }
-document.addEventListener("DOMContentLoaded", boot);
+
+if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded", boot);
+
+// Lets build/snapshot.js render the same HTML in Node, so the snapshot and the live page match.
+if (typeof module !== "undefined") module.exports = { BEACH, PAGES, readBlock, renderPaper, renderIndex, paperParts };
